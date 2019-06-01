@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.OutstockdetailMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Outstockdetail">
+    <id column="OutStockDetail_ID" jdbcType="INTEGER" property="outstockdetailId" />
+    <result column="OutStock_ID" jdbcType="INTEGER" property="outstockId" />
+    <result column="EnterStockDetail_ID" jdbcType="INTEGER" property="enterstockdetailId" />
+    <result column="CurrentBalance" jdbcType="VARCHAR" property="currentbalance" />
+    <result column="BalanceMoney" jdbcType="DOUBLE" property="balancemoney" />
+    <result column="OutStockNum" jdbcType="VARCHAR" property="outstocknum" />
+  </resultMap>
+  
+  <!-- 数据库表字段 -->
+  <sql id="Base_Column_List">
+    OutStockDetail_ID, OutStock_ID, EnterStockDetail_ID, CurrentBalance, BalanceMoney, 
+    OutStockNum
+  </sql>
+  
+  <insert id="insert" parameterType="com.qx.po.Outstockdetail">
+    insert into outstockdetail (OutStockDetail_ID, OutStock_ID, EnterStockDetail_ID, 
+      CurrentBalance, BalanceMoney, OutStockNum
+      )
+    values (#{outstockdetailId,jdbcType=INTEGER}, #{outstockId,jdbcType=INTEGER}, #{enterstockdetailId,jdbcType=INTEGER}, 
+      #{currentbalance,jdbcType=VARCHAR}, #{balancemoney,jdbcType=DOUBLE}, #{outstocknum,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+</mapper>

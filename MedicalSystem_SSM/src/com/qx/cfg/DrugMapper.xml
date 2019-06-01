@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.DrugMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Drug">
+    <id column="Drug_ID" jdbcType="INTEGER" property="drugId" />
+    <result column="DrugName" jdbcType="VARCHAR" property="drugname" />
+    <result column="DrugCode" jdbcType="VARCHAR" property="drugcode" />
+    <result column="FlBaseDetail_ID" jdbcType="INTEGER" property="flbasedetailId" />
+    <result column="Price" jdbcType="DOUBLE" property="price" />
+    <result column="DwBaseDetail_ID" jdbcType="INTEGER" property="dwbasedetailId" />
+    <result column="Spec" jdbcType="VARCHAR" property="spec" />
+    <result column="Coefficient" jdbcType="VARCHAR" property="coefficient" />
+    <result column="ProduceDate" jdbcType="DATE" property="producedate" />
+    <result column="EffectiveDate" jdbcType="DATE" property="effectivedate" />
+    <result column="Company_ID" jdbcType="INTEGER" property="companyId" />
+    <result column="StorageQuantity" jdbcType="VARCHAR" property="storagequantity" />
+    <result column="StorageLocation" jdbcType="VARCHAR" property="storagelocation" />
+    <!-- 外键字段 -->
+    <result column="BaseDetailName1" jdbcType="VARCHAR" property="basedetailname1" />
+    <result column="BaseDetailName2" jdbcType="VARCHAR" property="basedetailname2" />     
+    <result column="BaseDetailName" jdbcType="VARCHAR" property="basedetailname" />     
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    Drug_ID, DrugName, DrugCode, FlBaseDetail_ID, Price, DwBaseDetail_ID, Spec, Coefficient, 
+    ProduceDate, EffectiveDate, Company_ID, StorageQuantity, StorageLocation,BaseDetailName
+  </sql>
+  
+  <!-- 查询药品信息 -->
+  <select id="findDrugId" resultMap="BaseResultMap">   	
+    SELECT drug.Drug_ID,drug.DrugName,drug.Price,drug.Coefficient,
+	  (SELECT basedetail.BaseDetailName FROM basedetail WHERE basedetail.BaseDetail_ID= drug.FlBaseDetail_ID) AS BaseDetailName1,
+	  (SELECT basedetail.BaseDetailName FROM basedetail WHERE basedetail.BaseDetail_ID= drug.DwBaseDetail_ID) AS BaseDetailName2	
+    FROM drug INNER JOIN basedetail ON drug.DwBaseDetail_ID=basedetail.BaseDetail_ID              
+    WHERE  ${where} LIMIT ${startIndex},${pageSize}
+  </select>
+  
+  <!-- 查询查询药品信息总行数 --> 
+  <select id="getDrugIdRow" resultType="Integer">   	
+   	SELECT count(drug.Drug_ID)	 	   
+    FROM drug INNER JOIN basedetail ON drug.DwBaseDetail_ID=basedetail.BaseDetail_ID          
+    WHERE ${where}  
+  </select>
+  
+  <!-- 回填药品信息 -->
+  <select id="getHuiTianDrug" resultMap="BaseResultMap">   	
+    SELECT drug.Drug_ID,drug.DrugName,drug.Price,drug.Coefficient,
+	  (SELECT basedetail.BaseDetailName FROM basedetail WHERE basedetail.BaseDetail_ID= drug.DwBaseDetail_ID) AS BaseDetailName2,	 
+	  (SELECT basedetail.BaseDetailName FROM basedetail WHERE basedetail.BaseDetail_ID= drug.FlBaseDetail_ID) AS BaseDetailName1	
+    FROM drug INNER JOIN basedetail ON drug.DwBaseDetail_ID=basedetail.BaseDetail_ID 
+	 WHERE Drug_ID=${intwhere}	  
+  </select>
+   
+</mapper>

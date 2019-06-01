@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.DrugroomMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Drugroom">
+    <id column="DrugRoom_ID" jdbcType="INTEGER" property="drugroomId" />
+    <result column="DrugRoomName" jdbcType="VARCHAR" property="drugroomname" />
+    <result column="FlBaseDetail_ID" jdbcType="INTEGER" property="flbasedetailId" />
+    <result column="KsBaseDetail_ID" jdbcType="INTEGER" property="ksbasedetailId" />
+    <result column="DisplayOrder" jdbcType="VARCHAR" property="displayorder" />
+    <result column="BitRoom" jdbcType="BIT" property="bitroom" />
+    <result column="Drug_ID" jdbcType="INTEGER" property="drugId" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    DrugRoom_ID, DrugRoomName, FlBaseDetail_ID, KsBaseDetail_ID, DisplayOrder, BitRoom, 
+    Drug_ID
+  </sql>
+  
+  <!-- 出库—领药药房 -->
+  <select id="findDrugRoom_ID" resultMap="BaseResultMap">
+  	select drugroom.DrugRoom_ID , drugroom.DrugRoomName
+    from drugroom
+  </select>
+  
+  <insert id="insert" parameterType="com.qx.po.Drugroom">
+    insert into drugroom (DrugRoom_ID, DrugRoomName, FlBaseDetail_ID, 
+      KsBaseDetail_ID, DisplayOrder, BitRoom, 
+      Drug_ID)
+    values (#{drugroomId,jdbcType=INTEGER}, #{drugroomname,jdbcType=VARCHAR}, #{flbasedetailId,jdbcType=INTEGER}, 
+      #{ksbasedetailId,jdbcType=INTEGER}, #{displayorder,jdbcType=VARCHAR}, #{bitroom,jdbcType=BIT}, 
+      #{drugId,jdbcType=INTEGER})
+  </insert>
+  
+  
+</mapper>

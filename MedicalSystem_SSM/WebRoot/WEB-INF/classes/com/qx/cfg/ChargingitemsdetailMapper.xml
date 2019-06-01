@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.ChargingitemsdetailMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Chargingitemsdetail">
+    <id column="ChargingItemDetail_ID" jdbcType="INTEGER" property="chargingitemdetailId" />
+    <result column="ChargingItem_ID" jdbcType="INTEGER" property="chargingitemId" />
+    <result column="StockDetail_ID" jdbcType="INTEGER" property="stockdetailId" />
+    <result column="Amount" jdbcType="VARCHAR" property="amount" />
+    <result column="Discount" jdbcType="DOUBLE" property="discount" />
+    <result column="Frequency" jdbcType="VARCHAR" property="frequency" />
+    <result column="ItemMoney" jdbcType="DOUBLE" property="itemmoney" />
+    <result column="Coefficient" jdbcType="VARCHAR" property="coefficient" />
+    <!-- 外键表信息 -->
+    <result column="PrescriptionCode" jdbcType="VARCHAR" property="prescriptioncode" />
+    <result column="ReceivableMoney" jdbcType="DOUBLE" property="receivablemoney" />
+    <result column="PaymentMoney" jdbcType="DOUBLE" property="paymentmoney" />
+    <result column="User_ID" jdbcType="INTEGER" property="userId" />
+    <result column="ChargingTime" jdbcType="TIMESTAMP" property="chargingtime" />
+    <result column="BaseDetailName" jdbcType="VARCHAR" property="basedetailname" />
+    <result column="UserName" jdbcType="VARCHAR" property="username" />  
+    <result column="DrugName" jdbcType="VARCHAR" property="drugname" />
+    <result column="Price" jdbcType="DOUBLE" property="price" />   
+  </resultMap>
+  
+  <!--  数据库表字段 -->
+  <sql id="Base_Column_List">
+    ChargingItemDetail_ID, ChargingItem_ID, StockDetail_ID, Amount, Discount, Frequency, 
+    ItemMoney, Coefficient,PrescriptionCode,ReceivableMoney,PaymentMoney,User_ID,
+    ChargingTime,BaseDetailName,UserName,
+    DrugName,Price
+  </sql>
+  
+  <!-- 新增收费明细信息 -->
+  <insert id="InsertShouFeiMingXi" parameterType="com.qx.po.Chargingitemsdetail">
+     insert into chargingitemsdetail (ChargingItemDetail_ID, ChargingItem_ID, 
+      StockDetail_ID, Amount, Discount, 
+      Frequency, ItemMoney, Coefficient
+      )
+    values (#{chargingitemdetailId,jdbcType=INTEGER}, #{chargingitemId,jdbcType=INTEGER}, 
+      #{stockdetailId,jdbcType=INTEGER}, #{amount,jdbcType=VARCHAR}, #{discount,jdbcType=DOUBLE}, 
+      #{frequency,jdbcType=VARCHAR}, #{itemmoney,jdbcType=DOUBLE}, #{coefficient,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <!-- 查询收费信息退药退款 -->
+  <select id="findPageTuiKuan" resultMap="BaseResultMap">
+  	SELECT chargingitemsdetail.ChargingItemDetail_ID,drug.DrugName,chargingitems.PrescriptionCode,basedetail.BaseDetailName,
+	 chargingitemsdetail.Amount,drug.Price,chargingitemsdetail.ItemMoney,	
+	 chargingitems.PaymentMoney,users.UserName,chargingitemsdetail.Coefficient			  
+    FROM chargingitemsdetail     
+	 INNER JOIN chargingitems ON chargingitemsdetail.ChargingItem_ID = chargingitems.ChargingItem_ID	 
+	 INNER JOIN stockdetail ON chargingitemsdetail.StockDetail_ID = stockdetail.StockDetail_ID	 
+	 INNER JOIN drug ON stockdetail.Drug_ID = drug.Drug_ID	 
+	 INNER JOIN basedetail ON drug.DwBaseDetail_ID = basedetail.BaseDetail_ID       
+     INNER JOIN ouhosinfo ON chargingitems.OuHosInfo_ID = ouhosinfo.OuHosInfo_ID 	        
+	 INNER JOIN users ON ouhosinfo.User_ID = users.User_ID
+	WHERE ${where} LIMIT ${startIndex},${pageSize}
+  </select>
+  
+  <!-- 查询收费信息退药退款总行数 -->
+  <select id="getTotalRow" resultType="Integer">
+   	SELECT count(chargingitemsdetail.ChargingItemDetail_ID)	 	   
+    FROM chargingitemsdetail     
+	 INNER JOIN chargingitems ON chargingitemsdetail.ChargingItem_ID = chargingitems.ChargingItem_ID	 
+	 INNER JOIN stockdetail ON chargingitemsdetail.StockDetail_ID = stockdetail.StockDetail_ID	 
+	 INNER JOIN drug ON stockdetail.Drug_ID = drug.Drug_ID	 
+	 INNER JOIN basedetail ON drug.DwBaseDetail_ID = basedetail.BaseDetail_ID       
+     INNER JOIN ouhosinfo ON chargingitems.OuHosInfo_ID = ouhosinfo.OuHosInfo_ID 	        
+	 INNER JOIN users ON ouhosinfo.User_ID = users.User_ID
+    WHERE ${where} 
+  </select>
+  
+  <!-- 模糊查询其他统计信息 -->
+  <select id="findQiTaTongJi" resultMap="BaseResultMap">
+   SELECT chargingitemsdetail.ChargingItemDetail_ID,chargingitems.PrescriptionCode,  
+	  drug.DrugName,users.UserName,basedetail.BaseDetailName,	
+	  chargingitems.ReceivableMoney,chargingitems.PaymentMoney,chargingitemsdetail.Discount        
+   FROM chargingitemsdetail
+      INNER JOIN chargingitems ON chargingitemsdetail.ChargingItem_ID = chargingitems.ChargingItem_ID    
+      INNER JOIN stockdetail ON chargingitemsdetail.StockDetail_ID = stockdetail.StockDetail_ID	 
+      INNER JOIN drug ON stockdetail.Drug_ID = drug.Drug_ID	 	 
+      INNER JOIN ouhosinfo ON chargingitems.OuHosInfo_ID = ouhosinfo.OuHosInfo_ID 	  
+      INNER JOIN users ON ouhosinfo.User_ID = users.User_ID
+      INNER JOIN basedetail ON drug.DwBaseDetail_ID = basedetail.BaseDetail_ID 
+	WHERE ${where} LIMIT ${startIndex},${pageSize}
+  </select>
+  
+  <!-- 模糊查询其他统计信息总行数 -->
+  <select id="getQiTaTongJiRow" resultType="Integer">   	
+   	SELECT count(chargingitemsdetail.ChargingItemDetail_ID)	 	   
+    FROM chargingitemsdetail
+      INNER JOIN chargingitems ON chargingitemsdetail.ChargingItem_ID = chargingitems.ChargingItem_ID    
+      INNER JOIN stockdetail ON chargingitemsdetail.StockDetail_ID = stockdetail.StockDetail_ID	 
+      INNER JOIN drug ON stockdetail.Drug_ID = drug.Drug_ID	 	 
+      INNER JOIN ouhosinfo ON chargingitems.OuHosInfo_ID = ouhosinfo.OuHosInfo_ID 	  
+      INNER JOIN users ON ouhosinfo.User_ID = users.User_ID
+      INNER JOIN basedetail ON drug.DwBaseDetail_ID = basedetail.BaseDetail_ID
+    WHERE ${where} 
+  </select>
+  
+</mapper>

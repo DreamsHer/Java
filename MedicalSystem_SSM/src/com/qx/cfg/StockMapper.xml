@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.StockMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Stock">
+    <id column="Stock_ID" jdbcType="INTEGER" property="stockId" />
+    <result column="StockCode" jdbcType="VARCHAR" property="stockcode" />
+    <result column="Company_ID" jdbcType="INTEGER" property="companyId" />
+    <result column="ApplyTime" jdbcType="DATE" property="applytime" />
+    <result column="ArrivalTime" jdbcType="DATE" property="arrivaltime" />
+    <result column="DrugSpecies" jdbcType="VARCHAR" property="drugspecies" />
+    <result column="User_ID" jdbcType="INTEGER" property="userId" />
+    <result column="StockTime" jdbcType="DATE" property="stocktime" />
+  </resultMap>
+  
+  <!-- 数据库表字段 -->
+  <sql id="Base_Column_List">
+    Stock_ID, StockCode, Company_ID, ApplyTime, ArrivalTime, DrugSpecies, User_ID, StockTime
+  </sql>
+  
+  <!-- 进货编号  -->
+  <select id="findStockcode" resultMap="BaseResultMap">
+   	select * from stock order by  Stock_ID desc limit 1
+  </select>
+  
+  <!-- 新增药品进库信息 -->
+  <insert id="InsertStock" parameterType="com.qx.po.Stock" useGeneratedKeys="true" keyProperty="stockId">
+    insert into stock (Stock_ID, StockCode, Company_ID, 
+      ApplyTime, ArrivalTime, DrugSpecies, 
+      User_ID, StockTime)
+    values (#{stockId,jdbcType=INTEGER}, #{stockcode,jdbcType=VARCHAR}, #{companyId,jdbcType=INTEGER}, 
+      #{applytime,jdbcType=DATE}, #{arrivaltime,jdbcType=DATE}, #{drugspecies,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{stocktime,jdbcType=DATE})
+    <selectKey resultType="java.lang.Integer" keyProperty="stockId" order="AFTER" >
+      SELECT LAST_INSERT_ID() AS stockId
+    </selectKey> 
+  </insert>
+  
+</mapper>

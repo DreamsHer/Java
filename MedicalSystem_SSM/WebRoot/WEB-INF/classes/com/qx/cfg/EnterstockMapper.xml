@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.EnterstockMapper">
+
+  <resultMap id="BaseResultMap" type="com.qx.po.Enterstock">
+    <id column="EnterStock_ID" jdbcType="INTEGER" property="enterstockId" />   
+    <result column="EnterStockCode" jdbcType="VARCHAR" property="enterstockcode" />
+    <result column="EnterDate" jdbcType="DATE" property="enterdate" />
+    <result column="DjUser_ID" jdbcType="INTEGER" property="djuserId" />
+    <result column="EnterAuditorBit" jdbcType="BIT" property="enterauditorbit" />
+    <result column="ShUser_ID" jdbcType="INTEGER" property="shuserId" />
+    <result column="AuditorDate" jdbcType="DATE" property="auditordate" />
+  </resultMap>
+  
+  <!-- 数据库表字段 -->
+  <sql id="Base_Column_List">
+    EnterStock_ID, EnterStockCode, EnterDate, DjUser_ID, EnterAuditorBit, 
+    ShUser_ID, AuditorDate
+  </sql>
+   
+  <!-- 入库单号  -->
+  <select id="FindEnterStockCode" resultMap="BaseResultMap">
+   	select * from enterstock order by EnterStock_ID desc limit 1
+  </select>
+    
+  <!-- 新增药品入库信息 -->
+  <insert id="insertEnterStock" parameterType="com.qx.po.Enterstock" useGeneratedKeys="true" keyProperty="enterstockId">
+    insert into enterstock (EnterStock_ID, EnterStockCode, 
+      EnterDate, DjUser_ID, EnterAuditorBit, 
+      ShUser_ID, AuditorDate)
+    values (#{enterstockId,jdbcType=INTEGER},#{enterstockcode,jdbcType=VARCHAR}, 
+      #{enterdate,jdbcType=DATE}, #{djuserId,jdbcType=INTEGER}, #{enterauditorbit,jdbcType=BIT}, 
+      #{shuserId,jdbcType=INTEGER}, #{auditordate,jdbcType=DATE})
+    <selectKey resultType="java.lang.Integer" keyProperty="enterstockId" order="AFTER" >
+      SELECT LAST_INSERT_ID() AS enterstockId
+    </selectKey>
+  </insert>
+  
+</mapper>

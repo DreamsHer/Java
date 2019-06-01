@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.BasedetailMapper">
+
+  <resultMap id="BaseResultMap" type="com.qx.po.Basedetail">
+    <id column="BaseDetail_ID" jdbcType="INTEGER" property="basedetailId" />
+    <result column="BaseType_ID" jdbcType="INTEGER" property="basetypeId" />
+    <result column="BaseDetailName" jdbcType="VARCHAR" property="basedetailname" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    BaseDetail_ID, BaseType_ID, BaseDetailName
+  </sql>
+  
+  <!-- 查询性别 -->
+  <select id="findByBaseId" resultMap="BaseResultMap">
+  	select basedetail.BaseDetail_ID,basedetail.BaseDetailName 
+  	from basedetail 
+  	where basedetail.BaseType_ID=#{basetypeId} 
+  </select>
+  
+  <!-- 查询挂号类型 -->
+  <select id="findByBaseId1" resultMap="BaseResultMap">
+  	select basedetail.BaseDetail_ID,basedetail.BaseDetailName 
+  	from basedetail 
+  	where basedetail.BaseType_ID=#{basetypeId} 
+  </select>
+  
+  <!-- 查询挂号科室 -->
+  <select id="findByBaseId2" resultMap="BaseResultMap">
+  	select basedetail.BaseDetail_ID,basedetail.BaseDetailName 
+  	from basedetail 
+  	where basedetail.BaseType_ID=#{basetypeId} 
+  </select> 
+  
+</mapper>

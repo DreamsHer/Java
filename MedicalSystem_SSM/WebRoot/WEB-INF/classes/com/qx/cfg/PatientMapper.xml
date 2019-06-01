@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.PatientMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Patient">
+    <id column="Patient_ID" jdbcType="INTEGER" property="patientId" />
+    <result column="PatientCode" jdbcType="VARCHAR" property="patientcode" />
+    <result column="CardNo" jdbcType="VARCHAR" property="cardno" />
+    <result column="SocialSecurityNo" jdbcType="VARCHAR" property="socialsecurityno" />
+    <result column="PatientName" jdbcType="VARCHAR" property="patientname" />
+    <result column="BaseDetail_ID1" jdbcType="INTEGER" property="basedetailId1" />
+    <result column="BaseDetail_ID2" jdbcType="INTEGER" property="basedetailId2" />
+    <result column="BaseDetail_ID3" jdbcType="INTEGER" property="basedetailId3" />
+    <result column="BaseDetail_ID4" jdbcType="INTEGER" property="basedetailId4" />
+    <result column="Age" jdbcType="VARCHAR" property="age" />
+    <result column="Height" jdbcType="VARCHAR" property="height" />
+    <result column="Weight" jdbcType="VARCHAR" property="weight" />
+    <result column="NationId" jdbcType="VARCHAR" property="nationid" />
+    <result column="CertificateId" jdbcType="VARCHAR" property="certificateid" />
+    <result column="Phone" jdbcType="VARCHAR" property="phone" />
+    <result column="Company" jdbcType="VARCHAR" property="company" />
+    <result column="Residence" jdbcType="VARCHAR" property="residence" />
+    <result column="PhoneHome" jdbcType="VARCHAR" property="phonehome" />
+    <result column="LinkmanName" jdbcType="VARCHAR" property="linkmanname" />
+    <result column="AllergyDrugs" jdbcType="VARCHAR" property="allergydrugs" />
+    <result column="LsBitHabit" jdbcType="VARCHAR" property="lsbithabit" />
+    <result column="InActiveReason" jdbcType="VARCHAR" property="inactivereason" />
+    <result column="User_ID" jdbcType="INTEGER" property="userId" />
+    <result column="OperTime" jdbcType="TIMESTAMP" property="opertime" />
+  </resultMap> 
+  
+  <!-- 数据库表字段 -->
+  <sql id="Base_Column_List">
+    Patient_ID, PatientCode, CardNo, SocialSecurityNo, PatientName, BaseDetail_ID1, BaseDetail_ID2, 
+    BaseDetail_ID3, BaseDetail_ID4, Age, Height, Weight, NationId, CertificateId, 
+    Phone, Company, Residence, PhoneHome, LinkmanName, AllergyDrugs, LsBitHabit, InActiveReason, 
+    User_ID, OperTime
+  </sql>
+  
+  <!-- 新增门诊挂号信息 -->
+  <insert id="InsertPatient" parameterType="com.qx.po.Patient" useGeneratedKeys="true" keyProperty="patientId">	
+  	<selectKey resultType="java.lang.Integer" keyProperty="patientId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>  	
+    insert into patient (Patient_ID, PatientCode, CardNo, 
+      SocialSecurityNo, PatientName, BaseDetail_ID1, 
+      BaseDetail_ID2, BaseDetail_ID3, BaseDetail_ID4, 
+      Age, Height, Weight, 
+      NationId, CertificateId, Phone, 
+      Company, Residence, PhoneHome, 
+      LinkmanName, AllergyDrugs, LsBitHabit, 
+      InActiveReason, User_ID, OperTime) 
+    values (#{patientId,jdbcType=INTEGER}, #{patientcode,jdbcType=VARCHAR}, #{cardno,jdbcType=VARCHAR}, 
+      #{socialsecurityno,jdbcType=VARCHAR}, #{patientname,jdbcType=VARCHAR}, #{basedetailId1,jdbcType=INTEGER}, 
+      #{basedetailId2,jdbcType=INTEGER}, #{basedetailId3,jdbcType=INTEGER}, #{basedetailId4,jdbcType=INTEGER}, 
+      #{age,jdbcType=VARCHAR}, #{height,jdbcType=VARCHAR}, #{weight,jdbcType=VARCHAR}, 
+      #{nationid,jdbcType=VARCHAR}, #{certificateid,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{company,jdbcType=VARCHAR}, #{residence,jdbcType=VARCHAR}, #{phonehome,jdbcType=VARCHAR}, 
+      #{linkmanname,jdbcType=VARCHAR}, #{allergydrugs,jdbcType=VARCHAR}, #{lsbithabit,jdbcType=VARCHAR}, 
+      #{inactivereason,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{opertime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from patient
+    where Patient_ID = #{patientId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from patient
+    where Patient_ID = #{patientId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.qx.po.Patient">
+    insert into patient
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        Patient_ID,
+      </if>
+      <if test="patientcode != null">
+        PatientCode,
+      </if>
+      <if test="cardno != null">
+        CardNo,
+      </if>
+      <if test="socialsecurityno != null">
+        SocialSecurityNo,
+      </if>
+      <if test="patientname != null">
+        PatientName,
+      </if>
+      <if test="basedetailId1 != null">
+        BaseDetail_ID1,
+      </if>
+      <if test="basedetailId2 != null">
+        BaseDetail_ID2,
+      </if>
+      <if test="basedetailId3 != null">
+        BaseDetail_ID3,
+      </if>
+      <if test="basedetailId4 != null">
+        BaseDetail_ID4,
+      </if>
+      <if test="age != null">
+        Age,
+      </if>
+      <if test="height != null">
+        Height,
+      </if>
+      <if test="weight != null">
+        Weight,
+      </if>
+      <if test="nationid != null">
+        NationId,
+      </if>
+      <if test="certificateid != null">
+        CertificateId,
+      </if>
+      <if test="phone != null">
+        Phone,
+      </if>
+      <if test="company != null">
+        Company,
+      </if>
+      <if test="residence != null">
+        Residence,
+      </if>
+      <if test="phonehome != null">
+        PhoneHome,
+      </if>
+      <if test="linkmanname != null">
+        LinkmanName,
+      </if>
+      <if test="allergydrugs != null">
+        AllergyDrugs,
+      </if>
+      <if test="lsbithabit != null">
+        LsBitHabit,
+      </if>
+      <if test="inactivereason != null">
+        InActiveReason,
+      </if>
+      <if test="userId != null">
+        User_ID,
+      </if>
+      <if test="opertime != null">
+        OperTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        #{patientId,jdbcType=INTEGER},
+      </if>
+      <if test="patientcode != null">
+        #{patientcode,jdbcType=VARCHAR},
+      </if>
+      <if test="cardno != null">
+        #{cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="socialsecurityno != null">
+        #{socialsecurityno,jdbcType=VARCHAR},
+      </if>
+      <if test="patientname != null">
+        #{patientname,jdbcType=VARCHAR},
+      </if>
+      <if test="basedetailId1 != null">
+        #{basedetailId1,jdbcType=INTEGER},
+      </if>
+      <if test="basedetailId2 != null">
+        #{basedetailId2,jdbcType=INTEGER},
+      </if>
+      <if test="basedetailId3 != null">
+        #{basedetailId3,jdbcType=INTEGER},
+      </if>
+      <if test="basedetailId4 != null">
+        #{basedetailId4,jdbcType=INTEGER},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null">
+        #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="nationid != null">
+        #{nationid,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateid != null">
+        #{certificateid,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="residence != null">
+        #{residence,jdbcType=VARCHAR},
+      </if>
+      <if test="phonehome != null">
+        #{phonehome,jdbcType=VARCHAR},
+      </if>
+      <if test="linkmanname != null">
+        #{linkmanname,jdbcType=VARCHAR},
+      </if>
+      <if test="allergydrugs != null">
+        #{allergydrugs,jdbcType=VARCHAR},
+      </if>
+      <if test="lsbithabit != null">
+        #{lsbithabit,jdbcType=VARCHAR},
+      </if>
+      <if test="inactivereason != null">
+        #{inactivereason,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="opertime != null">
+        #{opertime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qx.po.Patient">
+    update patient
+    <set>
+      <if test="patientcode != null">
+        PatientCode = #{patientcode,jdbcType=VARCHAR},
+      </if>
+      <if test="cardno != null">
+        CardNo = #{cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="socialsecurityno != null">
+        SocialSecurityNo = #{socialsecurityno,jdbcType=VARCHAR},
+      </if>
+      <if test="patientname != null">
+        PatientName = #{patientname,jdbcType=VARCHAR},
+      </if>
+      <if test="basedetailId1 != null">
+        BaseDetail_ID1 = #{basedetailId1,jdbcType=INTEGER},
+      </if>
+      <if test="basedetailId2 != null">
+        BaseDetail_ID2 = #{basedetailId2,jdbcType=INTEGER},
+      </if>
+      <if test="basedetailId3 != null">
+        BaseDetail_ID3 = #{basedetailId3,jdbcType=INTEGER},
+      </if>
+      <if test="basedetailId4 != null">
+        BaseDetail_ID4 = #{basedetailId4,jdbcType=INTEGER},
+      </if>
+      <if test="age != null">
+        Age = #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null">
+        Height = #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        Weight = #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="nationid != null">
+        NationId = #{nationid,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateid != null">
+        CertificateId = #{certificateid,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        Phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        Company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="residence != null">
+        Residence = #{residence,jdbcType=VARCHAR},
+      </if>
+      <if test="phonehome != null">
+        PhoneHome = #{phonehome,jdbcType=VARCHAR},
+      </if>
+      <if test="linkmanname != null">
+        LinkmanName = #{linkmanname,jdbcType=VARCHAR},
+      </if>
+      <if test="allergydrugs != null">
+        AllergyDrugs = #{allergydrugs,jdbcType=VARCHAR},
+      </if>
+      <if test="lsbithabit != null">
+        LsBitHabit = #{lsbithabit,jdbcType=VARCHAR},
+      </if>
+      <if test="inactivereason != null">
+        InActiveReason = #{inactivereason,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        User_ID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="opertime != null">
+        OperTime = #{opertime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Patient_ID = #{patientId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qx.po.Patient">
+    update patient
+    set PatientCode = #{patientcode,jdbcType=VARCHAR},
+      CardNo = #{cardno,jdbcType=VARCHAR},
+      SocialSecurityNo = #{socialsecurityno,jdbcType=VARCHAR},
+      PatientName = #{patientname,jdbcType=VARCHAR},
+      BaseDetail_ID1 = #{basedetailId1,jdbcType=INTEGER},
+      BaseDetail_ID2 = #{basedetailId2,jdbcType=INTEGER},
+      BaseDetail_ID3 = #{basedetailId3,jdbcType=INTEGER},
+      BaseDetail_ID4 = #{basedetailId4,jdbcType=INTEGER},
+      Age = #{age,jdbcType=VARCHAR},
+      Height = #{height,jdbcType=VARCHAR},
+      Weight = #{weight,jdbcType=VARCHAR},
+      NationId = #{nationid,jdbcType=VARCHAR},
+      CertificateId = #{certificateid,jdbcType=VARCHAR},
+      Phone = #{phone,jdbcType=VARCHAR},
+      Company = #{company,jdbcType=VARCHAR},
+      Residence = #{residence,jdbcType=VARCHAR},
+      PhoneHome = #{phonehome,jdbcType=VARCHAR},
+      LinkmanName = #{linkmanname,jdbcType=VARCHAR},
+      AllergyDrugs = #{allergydrugs,jdbcType=VARCHAR},
+      LsBitHabit = #{lsbithabit,jdbcType=VARCHAR},
+      InActiveReason = #{inactivereason,jdbcType=VARCHAR},
+      User_ID = #{userId,jdbcType=INTEGER},
+      OperTime = #{opertime,jdbcType=TIMESTAMP}
+    where Patient_ID = #{patientId,jdbcType=INTEGER}
+  </update>
+</mapper>

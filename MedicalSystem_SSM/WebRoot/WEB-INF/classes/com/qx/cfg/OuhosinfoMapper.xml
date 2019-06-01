@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.OuhosinfoMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Ouhosinfo">
+    <id column="OuHosInfo_ID" jdbcType="INTEGER" property="ouhosinfoId" />
+    <result column="MzRegNo" jdbcType="VARCHAR" property="mzregno" />
+    <result column="RegTime" jdbcType="TIMESTAMP" property="regtime" />
+    <result column="Patient_ID" jdbcType="INTEGER" property="patientId" />
+    <result column="User_ID" jdbcType="INTEGER" property="userId" />
+    <result column="KsBaseDetail_ID" jdbcType="INTEGER" property="ksbasedetailId" />
+    <result column="LxBaseDetail_ID" jdbcType="INTEGER" property="lxbasedetailId" />
+    <result column="RegisterNo" jdbcType="VARCHAR" property="registerno" />
+    <result column="RegFee" jdbcType="DOUBLE" property="regfee" />
+    <result column="Pay" jdbcType="DOUBLE" property="pay" />
+    <result column="FirstDate" jdbcType="DATE" property="firstdate" />
+    <result column="JzBaseDetail_ID" jdbcType="INTEGER" property="jzbasedetailId" />
+    <!-- 病人信息表 -->
+    <result column="PatientName" jdbcType="VARCHAR" property="patientname" />
+    <result column="CardNo" jdbcType="VARCHAR" property="cardno" />
+    <result column="SocialSecurityNo" jdbcType="VARCHAR" property="socialsecurityno" /> 
+    <!-- 用户姓名 -->
+    <result column="UserName" jdbcType="VARCHAR" property="username" />     
+  </resultMap>
+  
+  <!-- 数据库表字段 -->
+  <sql id="Base_Column_List">
+    OuHosInfo_ID, MzRegNo, RegTime, Patient_ID, User_ID, KsBaseDetail_ID, LxBaseDetail_ID, 
+    RegisterNo, RegFee, Pay, FirstDate, JzBaseDetail_ID,PatientName,CardNo,SocialSecurityNo,
+    UserName
+  </sql>
+
+  <!-- 自动生成挂号单号  -->
+  <select id="findByGuaHao" resultMap="BaseResultMap">
+   	select * from ouhosinfo order by  OuHosInfo_ID desc limit 1
+  </select>
+  
+  <!-- 新增门诊挂号信息 -->
+  <insert id="InsertOuhosinfo" parameterType="com.qx.po.Ouhosinfo">  	  	
+    insert into ouhosinfo (OuHosInfo_ID, MzRegNo, RegTime, 
+      Patient_ID, User_ID, KsBaseDetail_ID, 
+      LxBaseDetail_ID, RegisterNo, RegFee, 
+      Pay, FirstDate, JzBaseDetail_ID)      
+    values (#{ouhosinfoId,jdbcType=INTEGER}, #{mzregno,jdbcType=VARCHAR}, #{regtime,jdbcType=TIMESTAMP}, 
+      #{patientId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{ksbasedetailId,jdbcType=INTEGER}, 
+      #{lxbasedetailId,jdbcType=INTEGER}, #{registerno,jdbcType=VARCHAR}, #{regfee,jdbcType=DOUBLE}, 
+      #{pay,jdbcType=DOUBLE}, #{firstdate,jdbcType=DATE}, #{jzbasedetailId,jdbcType=INTEGER})      
+  </insert>
+  
+  <!-- 查询需要收费的挂号病人信息 -->
+  <select id="findPage" resultMap="BaseResultMap">   	
+   	SELECT ouhosinfo.OuHosInfo_ID,ouhosinfo.MzRegNo,ouhosinfo.Patient_ID,patient.Patient_ID AS Patient_ID,ouhosinfo.User_ID, users.User_ID AS User_ID ,   
+	   patient.PatientName,patient.CardNo,patient.SocialSecurityNo,users.UserName  	 	 	   
+    FROM  ouhosinfo INNER JOIN patient ON ouhosinfo.Patient_ID = patient.Patient_ID     
+	  INNER JOIN users ON ouhosinfo.User_ID = users.User_ID    
+    WHERE ${where}  LIMIT ${startIndex},${pageSize}
+  </select>
+  
+  <!-- 查询总行数 -->
+  <select id="getTotalRow" resultType="Integer">   	
+   	SELECT count(ouhosinfo.OuHosInfo_ID)	 	   
+    FROM  ouhosinfo INNER JOIN patient ON ouhosinfo.Patient_ID = patient.Patient_ID     
+	  INNER JOIN users ON ouhosinfo.User_ID = users.User_ID 
+    WHERE ${where}  
+  </select>
+  
+  <!-- 回填病人信息 -->
+  <select id="findHuiTian" resultMap="BaseResultMap">   	
+     SELECT ouhosinfo.OuHosInfo_ID , ouhosinfo.MzRegNo,ouhosinfo.Patient_ID,patient.Patient_ID AS Patient_ID,ouhosinfo.User_ID, users.User_ID AS User_ID ,   
+	        patient.PatientName,patient.CardNo,patient.SocialSecurityNo,users.UserName  	 	 	   
+     FROM  ouhosinfo INNER JOIN patient ON ouhosinfo.Patient_ID = patient.Patient_ID     
+	       INNER JOIN users ON ouhosinfo.User_ID = users.User_ID    
+	 WHERE OuHosInfo_ID=${intwhere}	  
+  </select>
+  
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.UsersMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Users">
+    <id column="User_ID" jdbcType="INTEGER" property="userId" />
+    <result column="UserName" jdbcType="VARCHAR" property="username" />
+    <result column="Password" jdbcType="VARCHAR" property="password" />
+    <result column="UserCode" jdbcType="VARCHAR" property="usercode" />
+    <result column="BaseDetail_ID1" jdbcType="INTEGER" property="basedetailId1" />
+    <result column="BaseDetail_ID2" jdbcType="INTEGER" property="basedetailId2" />
+    <result column="Age" jdbcType="VARCHAR" property="age" />
+    <result column="CertificateId" jdbcType="VARCHAR" property="certificateid" />
+    <result column="Location" jdbcType="VARCHAR" property="location" />
+    <result column="Phone" jdbcType="VARCHAR" property="phone" />
+    <result column="Email" jdbcType="VARCHAR" property="email" />
+    <result column="Memo" jdbcType="VARCHAR" property="memo" />
+    <result column="Userrole_ID" jdbcType="INTEGER" property="userroleId" />
+    <result column="USERReviewNo" jdbcType="BIT" property="userreviewno" />
+  </resultMap>
+  
+  <!-- 数据库表字段 -->
+  <sql id="Base_Column_List">
+    User_ID, UserName, Password, UserCode, BaseDetail_ID1, BaseDetail_ID2, Age, CertificateId, 
+    Location, Phone, Email, Memo, Userrole_ID, USERReviewNo
+  </sql>
+  
+  <!-- 获取外键名称 -->
+  <resultMap type="com.qx.vo.UserVo" id="UserVoMap" extends="BaseResultMap">
+    <result column="UserroleName" jdbcType="VARCHAR" property="userrolename" />
+    <result column="BaseDetailName" jdbcType="VARCHAR" property="basedetailname" />
+  </resultMap>
+    
+  <!-- 获取用户名和密码  -->
+  <select id="selectByMC" resultMap="BaseResultMap">
+  	select users.* from users
+  	where users.UserName=#{username} and users.Password=#{password}
+  </select>
+                  
+   <!--注册用户 -->
+  <insert id="register" parameterType="com.qx.po.Users">     
+     insert into users (User_ID, UserName, Password, 
+     UserCode, BaseDetail_ID1,BaseDetail_ID2, Age, 
+     CertificateId, Location, Phone, 
+     Email, Memo, Userrole_ID, 
+     USERReviewNo)
+     values (#{userId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+     #{usercode,jdbcType=VARCHAR}, #{basedetailId1,jdbcType=INTEGER}, #{basedetailId2,jdbcType=INTEGER},
+     #{age,jdbcType=VARCHAR},#{certificateid,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+     #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR},
+     #{userroleId,jdbcType=INTEGER}, #{userreviewno,jdbcType=BIT})     
+  </insert>
+   
+  <!-- 根据身份证号查询 -->
+  <select id="findBycertificateidcs" resultMap="BaseResultMap">
+      select * from users where users.CertificateId=#{certificateid}
+  </select>
+  
+  <!-- 自动生成编号  -->
+  <select id="findByUsercode" resultMap="BaseResultMap">
+   	select * from users order by  User_ID desc limit 1
+  </select>
+  
+  <!-- 查询挂号医生 -->
+  <select id="findByDoctor" resultMap="BaseResultMap">
+      select users.User_ID, users.UserName from users 
+      where users.Userrole_ID= #{userroleId} or users.Userrole_ID= #{userroleId1} or users.Userrole_ID= #{userroleId2}
+  </select>
+  
+</mapper>

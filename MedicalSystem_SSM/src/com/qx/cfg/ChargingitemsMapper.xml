@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.ChargingitemsMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Chargingitems">
+    <id column="ChargingItem_ID" jdbcType="INTEGER" property="chargingitemId" />
+    <result column="OuHosInfo_ID" jdbcType="INTEGER" property="ouhosinfoId" />
+    <result column="InHosInfo_ID" jdbcType="INTEGER" property="inhosinfoId" />
+    <result column="PrescriptionCode" jdbcType="VARCHAR" property="prescriptioncode" />
+    <result column="ReceivableMoney" jdbcType="DOUBLE" property="receivablemoney" />
+    <result column="PaymentMoney" jdbcType="DOUBLE" property="paymentmoney" />
+    <result column="User_ID" jdbcType="INTEGER" property="userId" />
+    <result column="ChargingTime" jdbcType="DATE" property="chargingtime" />
+  </resultMap>
+  
+  <!--  数据库表字段 -->
+  <sql id="Base_Column_List">
+    ChargingItem_ID, OuHosInfo_ID, InHosInfo_ID, PrescriptionCode, ReceivableMoney, PaymentMoney, 
+    User_ID, ChargingTime
+  </sql>
+  
+  <!-- 自动生成收费编号  -->
+  <select id="findOuBianHao" resultMap="BaseResultMap">
+   	select * from chargingitems order by ChargingItem_ID desc limit 1
+  </select>
+  
+  <!-- 新增收费信息 -->
+  <insert id="InsertShouFei" parameterType="com.qx.po.Chargingitems" useGeneratedKeys="true" keyProperty="chargingitemId">    
+    insert into chargingitems (ChargingItem_ID, OuHosInfo_ID, InHosInfo_ID, 
+      PrescriptionCode, ReceivableMoney, PaymentMoney, 
+      User_ID, ChargingTime)
+    values (#{chargingitemId,jdbcType=INTEGER}, #{ouhosinfoId,jdbcType=INTEGER}, #{inhosinfoId,jdbcType=INTEGER}, 
+      #{prescriptioncode,jdbcType=VARCHAR}, #{receivablemoney,jdbcType=DOUBLE}, #{paymentmoney,jdbcType=DOUBLE}, 
+      #{userId,jdbcType=INTEGER}, #{chargingtime,jdbcType=DATE})
+    <selectKey resultType="java.lang.Integer" keyProperty="chargingitemId" order="AFTER" >
+      SELECT LAST_INSERT_ID() AS chargingitemId
+    </selectKey>
+  </insert>
+ 
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.OutstockMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Outstock">
+    <id column="OutStock_ID" jdbcType="INTEGER" property="outstockId" />
+    <result column="OutStockCode" jdbcType="VARCHAR" property="outstockcode" />
+    <result column="DrugRoom_ID" jdbcType="INTEGER" property="drugroomId" />
+    <result column="CkBaseDetail_ID" jdbcType="INTEGER" property="ckbasedetailId" />
+    <result column="DjUser_ID" jdbcType="INTEGER" property="djuserId" />
+    <result column="OutDate" jdbcType="DATE" property="outdate" />
+    <result column="EOutAuditorBit" jdbcType="BIT" property="eoutauditorbit" />
+    <result column="ShUser_ID" jdbcType="INTEGER" property="shuserId" />
+    <result column="AuditorDate" jdbcType="DATE" property="auditordate" />
+  </resultMap>
+  
+  <!-- 数据库表字段 -->  
+  <sql id="Base_Column_List">
+    OutStock_ID, OutStockCode, DrugRoom_ID, CkBaseDetail_ID, DjUser_ID, OutDate, EOutAuditorBit, 
+    ShUser_ID, AuditorDate
+  </sql>
+  
+  <!-- 自动生成出库单号 -->
+  <select id="findChuKuDanHao" resultMap="BaseResultMap">
+   	select * from outstock order by OutStock_ID desc limit 1
+  </select>
+  
+  <!-- 新增药品出库信息 -->
+  <insert id="insertOutstock" parameterType="com.qx.po.Outstock">
+    insert into outstock (OutStock_ID, OutStockCode, DrugRoom_ID, 
+      CkBaseDetail_ID, DjUser_ID, OutDate, 
+      EOutAuditorBit, ShUser_ID, AuditorDate
+      )
+    values (#{outstockId,jdbcType=INTEGER}, #{outstockcode,jdbcType=VARCHAR}, #{drugroomId,jdbcType=INTEGER}, 
+      #{ckbasedetailId,jdbcType=INTEGER}, #{djuserId,jdbcType=INTEGER}, #{outdate,jdbcType=DATE}, 
+      #{eoutauditorbit,jdbcType=BIT}, #{shuserId,jdbcType=INTEGER}, #{auditordate,jdbcType=DATE}
+      )
+  </insert>
+ 
+</mapper>

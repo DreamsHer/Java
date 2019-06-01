@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.EnterstockdetailMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Enterstockdetail">
+    <id column="EnterStockDetail_ID" jdbcType="INTEGER" property="enterstockdetailId" />
+    <result column="EnterStock_ID" jdbcType="INTEGER" property="enterstockId" />
+    <result column="StockDetail_ID" jdbcType="INTEGER" property="stockdetailId" />
+    <result column="EnterStockNum" jdbcType="VARCHAR" property="enterstocknum" />
+    <result column="EnterStockMoney" jdbcType="DOUBLE" property="enterstockmoney" />
+    <!-- 外键表字段 -->
+    <result column="EnterStockCode" jdbcType="VARCHAR" property="enterstockcode" />
+    <result column="EnterDate" jdbcType="DATE" property="enterdate" />
+    <result column="DjUser_ID" jdbcType="INTEGER" property="djuserId" />
+    <result column="EnterAuditorBit" jdbcType="BIT" property="enterauditorbit" />     
+    <result column="CompanyName" jdbcType="VARCHAR" property="companyname" />
+    <result column="DrugName" jdbcType="VARCHAR" property="drugname" />
+    <result column="StockNum" jdbcType="VARCHAR" property="stocknum" />
+    <result column="UserName" jdbcType="VARCHAR" property="username" />
+    <result column="EnterDates" jdbcType="DATE" property="enterdates" />     
+  </resultMap>
+  
+  <!--  数据库表字段 -->
+  <sql id="Base_Column_List">
+    EnterStockDetail_ID, EnterStock_ID, StockDetail_ID, EnterStockNum, EnterStockMoney,
+    EnterStockCode, EnterDate, DjUser_ID, EnterAuditorBit,
+    CompanyName,DrugName,StockNum,UserName,EnterDates
+  </sql>
+  
+  <!--  新增入库明细信息 -->
+  <insert id="insertEnterStockDetail_ID" parameterType="com.qx.po.Enterstockdetail">
+    insert into enterstockdetail (EnterStockDetail_ID, EnterStock_ID, 
+      StockDetail_ID, EnterStockNum, EnterStockMoney
+      )
+    values (#{enterstockdetailId,jdbcType=INTEGER}, #{enterstockId,jdbcType=INTEGER}, 
+      #{stockdetailId,jdbcType=INTEGER}, #{enterstocknum,jdbcType=VARCHAR}, #{enterstockmoney,jdbcType=DOUBLE}
+      )
+  </insert>
+  
+  <!-- 查询入库明细信息审核 -->
+  <select id="getEnterStocks" resultMap="BaseResultMap">
+     SELECT enterstockdetail.EnterStockDetail_ID,enterstock.EnterStockCode,enterstock.EnterAuditorBit,	  
+	   company.CompanyName,drug.DrugName,stockdetail.StockNum,users.UserName,
+	   DATE_FORMAT(enterstock.EnterDate,"%Y-%m-%d") AS EnterDates	  	  	
+     FROM enterstockdetail  INNER JOIN enterstock ON enterstock.EnterStock_ID=enterstockdetail.EnterStock_ID   
+	   INNER JOIN  stockdetail ON enterstockdetail.StockDetail_ID = stockdetail.StockDetail_ID	
+	   INNER JOIN  stock ON stockdetail.Stock_ID = stock.Stock_ID	
+	   INNER JOIN company ON stock.Company_ID = company.Company_ID	
+	   INNER JOIN drug ON stockdetail.Drug_ID = drug.Drug_ID
+	   INNER JOIN users ON enterstock.DjUser_ID = users.User_ID
+     WHERE ${where} LIMIT ${startIndex},${pageSize}
+  </select>
+  <select id="getEnterStockRow" resultType="Integer">
+  	SELECT count(enterstockdetail.EnterStockDetail_ID)
+  	FROM enterstockdetail  INNER JOIN enterstock ON enterstock.EnterStock_ID=enterstockdetail.EnterStock_ID   
+	   INNER JOIN  stockdetail ON enterstockdetail.StockDetail_ID = stockdetail.StockDetail_ID	
+	   INNER JOIN  stock ON stockdetail.Stock_ID = stock.Stock_ID	
+	   INNER JOIN company ON stock.Company_ID = company.Company_ID	
+	   INNER JOIN drug ON stockdetail.Drug_ID = drug.Drug_ID
+	   INNER JOIN users ON enterstock.DjUser_ID = users.User_ID
+    WHERE ${where}
+  </select>
+  
+  <!-- <select id="">
+  
+  	SELECT distinct RECORD_ID 
+  	
+  	FROM strTableDelNamer 
+  	
+  	WHERE DEL_DATE<=? AND DEL_DATE>=?
+  
+  </select> -->
+  
+  <!-- 审核    入库明细信息 -->
+  
+  
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.UserroleMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Userrole">
+    <id column="Userrole_ID" jdbcType="INTEGER" property="userroleId" />
+    <result column="UserroleName" jdbcType="VARCHAR" property="userrolename" />
+    <result column="BaseDetail_ID" jdbcType="INTEGER" property="basedetailId" />
+  </resultMap> 
+  
+  <!-- 数据库表字段 -->
+  <sql id="Base_Column_List">
+    Userrole_ID, UserroleName, BaseDetail_ID
+  </sql>
+  
+  <!-- 查询角色类型 -->
+  <select id="findByUserrole" resultMap="BaseResultMap">
+  	select userrole.Userrole_ID,userrole.UserroleName 
+	from userrole
+  </select>
+  
+</mapper>

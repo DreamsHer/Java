@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.StockdetailMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Stockdetail">
+    <result column="StockDetail_ID" jdbcType="INTEGER" property="stockdetailId" />
+    <result column="Stock_ID" jdbcType="INTEGER" property="stockId" />
+    <result column="Drug_ID" jdbcType="INTEGER" property="drugId" />
+    <result column="StockNum" jdbcType="VARCHAR" property="stocknum" />
+    <!-- 外键表字段 -->
+    <result column="StockCode" jdbcType="VARCHAR" property="stockcode" />
+    <result column="DrugName" jdbcType="VARCHAR" property="drugname" />
+    <result column="BaseDetailName" jdbcType="VARCHAR" property="basedetailname" />
+    <result column="BaseDetailName1" jdbcType="VARCHAR" property="basedetailname1" />
+    <result column="BaseDetailName2" jdbcType="VARCHAR" property="basedetailname2" />
+    <result column="Spec" jdbcType="VARCHAR" property="spec" />
+    <result column="Price" jdbcType="DOUBLE" property="price" />
+    <result column="Coefficient" jdbcType="VARCHAR" property="coefficient" />
+    <result column="EffectiveDate" jdbcType="DATE" property="effectivedate" />
+    <result column="EffectiveDates" jdbcType="DATE" property="effectivedates" />
+    <result column="CompanyName" jdbcType="VARCHAR" property="companyname" />    
+  </resultMap>
+  
+  <!-- 数据库表字段 -->
+  <sql id="Base_Column_List">
+    StockDetail_ID, Stock_ID, Drug_ID, StockNum,DrugName,BaseDetailName,BaseDetailName1,
+    BaseDetailName2, Price, Coefficient, StockCode, Spec, CompanyName, EffectiveDate,EffectiveDates   
+  </sql>
+  
+  <!-- 新增进货明细信息 -->
+  <insert id="InsertStockdetail" parameterType="com.qx.po.Stockdetail">
+    insert into stockdetail (StockDetail_ID, Stock_ID, Drug_ID, StockNum)
+    values (#{stockdetailId,jdbcType=INTEGER},#{stockId,jdbcType=INTEGER},#{drugId,jdbcType=INTEGER}, 
+      #{stocknum,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 查询进货明细入库 -->
+  <select id="getYaoPinRuKu" resultMap="BaseResultMap">
+  	 SELECT stockdetail.StockDetail_ID,stock.StockCode,
+       company.CompanyName,drug.DrugName,drug.Spec,stockdetail.StockNum,
+       drug.Price,basedetail.BaseDetailName,drug.Coefficient,
+       DATE_FORMAT(drug.EffectiveDate,"%Y-%m-%d") AS EffectiveDates     
+     FROM  stockdetail INNER JOIN stock ON stockdetail.Stock_ID = stock.Stock_ID
+       INNER JOIN drug ON stockdetail.Drug_ID = drug.Drug_ID
+       INNER JOIN company ON drug.Company_ID=company.Company_ID
+       INNER JOIN basedetail ON drug.DwBaseDetail_ID=basedetail.BaseDetail_ID
+    WHERE ${where} LIMIT ${startIndex},${pageSize}
+  </select>
+  
+  <!-- 查询进货明细入库行数 --> 
+  <select id="getYaoPinRuKuRow" resultType="Integer">
+  	SELECT count(stockdetail.StockDetail_ID)
+  	FROM  stockdetail INNER JOIN stock ON stockdetail.Stock_ID = stock.Stock_ID
+       INNER JOIN drug ON stockdetail.Drug_ID = drug.Drug_ID
+       INNER JOIN company ON drug.Company_ID=company.Company_ID
+       INNER JOIN basedetail ON drug.DwBaseDetail_ID=basedetail.BaseDetail_ID
+    WHERE ${where} 
+  </select>
+  
+  <!-- 回填请购单入库信息 -->
+  <select id="getHuiTianStock" resultMap="BaseResultMap">   	
+     SELECT stockdetail.StockDetail_ID,stock.StockCode,
+       company.CompanyName,drug.DrugName,drug.Spec,stockdetail.StockNum,
+       drug.Price,basedetail.BaseDetailName,drug.Coefficient,
+       DATE_FORMAT(drug.EffectiveDate,"%Y-%m-%d") AS EffectiveDates     
+     FROM  stockdetail INNER JOIN stock ON stockdetail.Stock_ID = stock.Stock_ID
+       INNER JOIN drug ON stockdetail.Drug_ID = drug.Drug_ID
+       INNER JOIN company ON drug.Company_ID=company.Company_ID
+       INNER JOIN basedetail ON drug.DwBaseDetail_ID=basedetail.BaseDetail_ID
+	 WHERE StockDetail_ID=${intwhere}	  
+  </select>
+    
+  <!--门诊收费 ，调出收费药品信息 -->
+  <select id="getShouFeiYaoPin" resultMap="BaseResultMap">
+  	 SELECT stockdetail.StockDetail_ID,drug.DrugName,drug.Price,basedetail.BaseDetailName
+	 FROM stockdetail INNER JOIN  drug ON stockdetail.Drug_ID=drug.Drug_ID
+          INNER JOIN  basedetail ON drug.DwBaseDetail_ID=basedetail.BaseDetail_ID
+    WHERE ${where} LIMIT ${startIndex},${pageSize}
+  </select>
+  
+  <!-- 门诊收费 ，调出收费药品信息行数 --> 
+  <select id="getShouFeiYaoPinRow" resultType="Integer">
+  	SELECT count(stockdetail.StockDetail_ID)
+  	FROM stockdetail INNER JOIN  drug ON stockdetail.Drug_ID=drug.Drug_ID
+          INNER JOIN  basedetail ON drug.DwBaseDetail_ID=basedetail.BaseDetail_ID
+    WHERE ${where}
+  </select>
+  
+  <!-- 回填门诊收费病人信息 -->
+  <select id="HuiTianShouFeiYaoPin" resultMap="BaseResultMap">   	
+     SELECT stockdetail.StockDetail_ID,drug.DrugName,drug.Price,basedetail.BaseDetailName
+	 FROM stockdetail INNER JOIN  drug ON stockdetail.Drug_ID=drug.Drug_ID
+          INNER JOIN  basedetail ON drug.DwBaseDetail_ID=basedetail.BaseDetail_ID
+	 WHERE StockDetail_ID=${intwhere}	  
+  </select>
+  
+</mapper>

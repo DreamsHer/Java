@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qx.mapper.CompanyMapper">
+  <resultMap id="BaseResultMap" type="com.qx.po.Company">
+    <id column="Company_ID" jdbcType="INTEGER" property="companyId" />
+    <result column="CompanyCode" jdbcType="VARCHAR" property="companycode" />
+    <result column="CompanyName" jdbcType="VARCHAR" property="companyname" />
+    <result column="CompPhone" jdbcType="VARCHAR" property="compphone" />
+    <result column="CompAddre" jdbcType="VARCHAR" property="compaddre" />
+    <result column="Bank" jdbcType="VARCHAR" property="bank" />
+    <result column="BankAccount" jdbcType="VARCHAR" property="bankaccount" />
+    <result column="CompCorpo" jdbcType="VARCHAR" property="compcorpo" />
+    <result column="LicenceCode" jdbcType="VARCHAR" property="licencecode" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    Company_ID, CompanyCode, CompanyName, CompPhone, CompAddre, Bank, BankAccount, CompCorpo, 
+    LicenceCode
+  </sql>
+  
+  <!-- 查询供应商名称 -->
+  <select id="findCompanyId" resultMap="BaseResultMap">
+  	SELECT company.Company_ID, company.CompanyName 
+  	FROM company 
+  </select>
+   
+</mapper>

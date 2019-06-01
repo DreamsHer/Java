@@ -1,0 +1,198 @@
+body{
+    background-color: white!important;
+}
+
+
+
+.div-table-widge-smheader-h150 {
+    height: 150px;
+    min-height: 150px;
+    max-height: 150px;
+}
+
+.div-table-widge-smheader-h150X2 {
+    height: 384px;
+    min-height: 384px;
+    max-height: 384px;
+}
+
+.div-table-widge-smheader-h200 {
+    height: 220px;
+    min-height: 220px;
+    max-height: 220px;
+}
+
+.div-table-widge-smheader-h300 {
+    height: 300px;
+    min-height: 300px;
+    max-height: 300px;
+}
+
+.div-table-widge-smheader-h400 {
+    height: 400px;
+    min-height: 400px;
+    max-height: 400px;
+}
+
+.div-table-widge-smheader-h200X2 {
+    height: 484px;
+    min-height: 484px;
+    max-height: 484px;
+}
+
+.div-table-widge-smheader-h10r {
+    height: 380px;
+    min-height: 380px;
+    max-height: 380px;
+}
+
+.div-table-widge-smheader-h15r {
+    height: 470px;
+    min-height: 470px;
+    max-height: 470px;
+}
+
+.div-table-widge-smheader-h15rck {
+    height: 494px;
+    min-height: 494px;
+    max-height: 494px;
+}
+
+form .form-group {
+    margin-bottom: 5px;
+}
+
+.modal-header {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/*.table-responsive {*/
+    /*width: 96%;*/
+    /*margin-left: 2%;*/
+/*}*/
+
+.chosen-container {
+    width: 100% !important;
+}
+
+.label-value-brown {
+    color: brown;
+    margin-top: 4px;
+}
+
+.ztree {
+    height: 99% !important;
+}
+
+.btn-group {
+    margin-bottom: 5px;
+}
+/*房间外观图 td样式*/
+.tdRoomView:hover {
+    background-color: aqua;
+}
+
+
+.select2-container {
+    width: 100% !important;
+}
+/*select2 关于fancybox的zindex过大（8030）导致Select2无法显示 临时解决办法*/
+.select2-dropdown {
+    z-index: 9000;
+}
+
+
+
+
+.btn-green {
+  background-color: green !important;
+  border-color: #008000!important;
+}
+
+.btn-green:hover,
+.btn-green:focus,
+.btn-green:active,
+.btn-green.active,
+.open .dropdown-toggle.btn-green {
+  background-color: green!important;
+  border-color: #008000!important;
+}
+
+.btn-green:active,
+.btn-green.active,
+.open .dropdown-toggle.btn-green {
+  background-image: none;
+}
+
+.btn-green.disabled,
+.btn-green[disabled],
+fieldset[disabled] .btn-green,
+.btn-green.disabled:hover,
+.btn-green[disabled]:hover,
+fieldset[disabled] .btn-green:hover,
+.btn-green.disabled:focus,
+.btn-green[disabled]:focus,
+fieldset[disabled] .btn-green:focus,
+.btn-green.disabled:active,
+.btn-green[disabled]:active,
+fieldset[disabled] .btn-green:active,
+.btn-green.disabled.active,
+.btn-green[disabled].active,
+fieldset[disabled] .btn-green.active {
+  background-color: #228b22!important;
+  border-color: #32cd32!important;
+}
+
+/*button圆角*/
+.btn-radius {
+    border-radius: 5px;
+    border: 1px;
+    margin: 1px 2px 1px 2px;
+}
+
+/*form 控件圆角处理*/
+.form-control-radius {
+    border-radius: 5px !important;
+}
+
+.form-radius{
+
+}
+
+.form-radius input[type=email],
+.form-radius input[type=url],
+.form-radius input[type=search],
+.form-radius input[type=tel],
+.form-radius input[type=color],
+.form-radius input[type=text],
+.form-radius input[type=password],
+.form-radius input[type=datetime],
+.form-radius input[type=datetime-local],
+.form-radius input[type=date],
+.form-radius input[type=month],
+.form-radius input[type=time],
+.form-radius input[type=week],
+.form-radius input[type=number],
+.form-radius textarea,
+.form-radius select{
+    border-radius: 5px !important;
+}
+
+/*.form-control:focus,*/
+/*.single-line:focus*/
+/*input:focus {*/
+    /*!*h+*!*/
+    /*#border-color: #1ab394 !important;*/
+    /*!*ace*!*/
+    /*!*#border-color: #F59942 !important;*!*/
+/*}*/
+
+.has-error .form-control:focus{
+    border-color: red!important;
+}
+
+.has-success .form-control:focus{
+    border-color: #1ab394!important;
+}
+
